@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ConcertsView>
+
+@{
+    ViewData["Title"] = "Concerts";
+}
+
+<div>
+
+    @foreach (var item in Model)
+    {
+        <div class="AfishaView">
+            <h1 style="background-color: aqua">@item.TitleConcert</h1>
+
+            <p class="textView">
+                <img src="@item.Image" style="float: right" width="150" height="250" />
+                @item.Description
+            </p>
+            <p>Место проведения: @item.Location (@item.HallForPerformances)</p>
+            <p>Цена билета от: @item.PriceTicket</p>
+            <p>Номер для справок: @item.PhoneInfoConcert</p>
+            <p>Дата проведения @item.ConcertDate</p> 
+
+            <a asp-controller="Home" asp-action="Reserve" asp-route-Id="@item.Id" class="button">Забронировать билет</a>
+        </div>
+    }
+
+</div>
+
+<style>
+    .AfishaView {
+        border: groove;
+        border-color: red;
+        padding: 5px;
+        margin-bottom: 20px;
+        float:left;
+    }
+
+    .textView {
+        font-family: Georgia
+    }
+
+    .button {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 5px 15px; /* Поля */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+
+</style>
