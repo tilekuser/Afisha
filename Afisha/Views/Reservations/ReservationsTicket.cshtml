@@ -41,6 +41,7 @@ if (i == 20)
     </div>
 
     <button>To book</button>
+    <a asp-controller="Notification" asp-action="SendNotificationEmail" asp-route-idEvent="@Model.Id" asp-route-date="@Model.Date" asp-route-userName="@Model.UserName" asp-route-titleEvent="@Model.Title" class="button">Sent notification</a>
 </form>
 
 @if (TempData["SuccessMessage"] != null)
@@ -53,6 +54,13 @@ if (i == 20)
 {
     <div class="alert alert-danger" role="alert">
         @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessNotification"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessNotification"]
     </div>
 }
 

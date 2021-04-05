@@ -39,7 +39,7 @@ namespace Afisha.Controllers
         //    return View();
         //}
 
-        public IActionResult ConcertsView(EventsView eventsView)
+        public IActionResult ConcertsView()
         {
             var eventsViews = from concert in db.concerts.Where(c => c.ConcertDate >= DateTime.Today).ToList()
                               select
