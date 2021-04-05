@@ -1,0 +1,88 @@
+﻿@model ReservationsVM
+@{
+    ViewData["Title"] = "Booking tickets";
+}
+<h1>@Model.Title</h1>
+<label>@Model.Date</label>
+<form asp-action="ReservationsTicket" asp-controller="Reservations" asp-route-date="@Model.Date" asp-anti-forgery="true">
+    <div class="checkboxes">
+        <p class="priceView" style="background-color: white">Ticket price @Model.BeginPriceTicket som</p>
+        @for (int i = Model.TotalSeats; i > 0; i--)
+        {
+            <label>@i</label>
+
+            <input name="orderNumbers" value="@i" type="checkbox"
+                   @if (Model.Seatreservations.Contains(i)) {
+            <input value="@(i)" type="checkbox" checked disabled />
+        }>
+
+if (i == 80)
+{
+    <p class="priceView" style="background-color: saddlebrown"> Ticket price: @(Model.BeginPriceTicket+100) som</p>
+}
+
+if (i == 60)
+{
+    <br />
+    <p class="priceView" style="background-color:yellow">Ticket price: @(Model.BeginPriceTicket+200) som</p>
+}
+
+if (i == 40)
+{
+    <br />
+    <p class="priceView" style="background-color:green">Ticket price: @(Model.BeginPriceTicket+300) som</p>
+}
+if (i == 20)
+{
+    <br />
+    <p class="priceView" style="background-color: red">Ticket price: @(Model.BeginPriceTicket+400) som</p>
+}
+}
+    </div>
+
+    <button>To book</button>
+</form>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="borderScene">
+    <b>Scene</b>
+</div>
+
+<style>
+    .priceView {
+        margin: 3px;
+    }
+
+    .borderScene {
+        border: solid;
+        text-align: center;
+        margin-top: 200px;
+        border-width: 50px;
+        background-color: dimgray;
+        border-color: dimgray;
+        font-size: 25px;
+    }
+
+    .checkboxes {
+        text-align: center;
+        margin-right: 10px
+    }
+
+        .checkboxes input {
+            margin-right: 10px;
+        }
+</style>
+
+

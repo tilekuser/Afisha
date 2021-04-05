@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ConcertsView>
+﻿@model IEnumerable<EventsView>
 
 @{
     ViewData["Title"] = "Concerts";
@@ -8,31 +8,28 @@
 
     @foreach (var item in Model)
     {
-        <div class="AfishaView">
-            <h1 style="background-color: aqua">@item.TitleConcert</h1>
+        <div class="AfishaBorder">
+            <img src="@item.Image" width="300" height="350" />
+            
+            <div class="textView">
+                
+                <p>Location: @item.Location </p>
+                <p>Ticket price from: @item.PriceTicket</p>
 
-            <p class="textView">
-                <img src="@item.Image" style="float: right" width="150" height="250" />
-                @item.Description
-            </p>
-            <p>Место проведения: @item.Location (@item.HallForPerformances)</p>
-            <p>Цена билета от: @item.PriceTicket</p>
-            <p>Номер для справок: @item.PhoneInfoConcert</p>
-            <p>Дата проведения @item.ConcertDate</p> 
-
-            <a asp-controller="Home" asp-action="Reserve" asp-route-Id="@item.Id" class="button">Забронировать билет</a>
+                <a asp-controller="Home" asp-action="DetailsPage" asp-route-Id="@item.Id" class="button">See more</a>
+            </div>
         </div>
     }
 
 </div>
 
 <style>
-    .AfishaView {
+    .AfishaBorder {
         border: groove;
         border-color: red;
         padding: 5px;
         margin-bottom: 20px;
-        float:left;
+        float: left;
     }
 
     .textView {
@@ -46,5 +43,4 @@
         text-decoration: none; /* Убираем подчёркивание */
         color: #000; /* Цвет текста */
     }
-
 </style>

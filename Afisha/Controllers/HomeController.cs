@@ -21,41 +21,61 @@ namespace Afisha.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var eventsViews = from concert in db.concerts.Where(c => c.ConcertDate >= DateTime.Today).ToList()
+                              select
+                              (new EventsView
+                              {
+                                  Id = concert.Id,
+                                  Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                                  Image = concert.Image,
+                                  PriceTicket = concert.PriceTicket
+                              });
+
+            return View(eventsViews);
         }
 
-        public IActionResult Privacy()
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult ConcertsView(EventsView eventsView)
         {
-            return View();
+            var eventsViews = from concert in db.concerts.Where(c => c.ConcertDate >= DateTime.Today).ToList()
+                              select
+                             (
+                             new EventsView
+                              {
+                                  Id = concert.Id,
+                                  Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                                  Image = concert.Image,
+                                  PriceTicket = concert.PriceTicket
+                              });
+
+            return View(eventsViews);
         }
 
-        public async Task<IActionResult> ConcertsView()
+        public async Task<IActionResult> DetailsPage(int Id)
         {
-            var AllConcerts = await db.concerts.ToListAsync();
-
-            var viewOperator = from app in db.concerts
+            var seans = await db.seanses.Where(n => n.ConcertId == Id && n.Date >= DateTime.Today).ToListAsync();
+            var concertDetail = from app in db.concerts.Where(n => n.Id == Id)
                                select
-                               (new ConcertsView
+                               (
+                               new DetailsPage
                                {
                                    Id = app.Id,
                                    TitleConcert = app.TitleConcert,
                                    ConcertDate = app.ConcertDate,
-                                   DurationOfConcertDays = app.DurationOfConcertDays,
-                                   Location = app.LocationId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                                   Location = app.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
                                    PriceTicket = app.PriceTicket,
                                    HallForPerformances = app.HallForPerformances == HallForPerformances.BigHall ? "Big hall" : app.HallForPerformances == HallForPerformances.SmallHall ? "Small hall" : "Street",
                                    PhoneInfoConcert = app.PhoneInfoConcert,
                                    Image = app.Image,
-                                   Description = app.Description
+                                   Description = app.Description,
+                                   dates = seans                           
                                }
                                );
-            
-            return View(viewOperator);
-        }
-
-        public async Task<IActionResult> Reserve(int Id)
-        {
-            return View();
+            return View(concertDetail.ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

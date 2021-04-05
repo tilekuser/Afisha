@@ -1,8 +1,49 @@
-﻿@{
+﻿@model IEnumerable<EventsView>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">All events:</h1>
 </div>
+
+<div>
+
+    @foreach (var concert in Model)
+    {
+        <div class="AfishaBorder">
+            <img src="@concert.Image" width="300" height="350" />
+
+            <div class="textView">
+
+                <p>Location: @concert.Location </p>
+                <p>Ticket price from: @concert.PriceTicket</p>
+
+                <a asp-controller="Home" asp-action="DetailsPage" asp-route-Id="@concert.Id" class="button">See more</a>
+            </div>
+        </div>
+    }
+
+</div>
+
+<style>
+    .AfishaBorder {
+        border: groove;
+        border-color: red;
+        padding: 5px;
+        margin-bottom: 20px;
+        float: left;
+    }
+
+    .textView {
+        font-family: Georgia
+    }
+
+    .button {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 5px 15px; /* Поля */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+</style>
