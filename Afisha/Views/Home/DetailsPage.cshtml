@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DetailsPage>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    @foreach (var item in Model)
+    {
+
+        <img src="@item.Image" style="float:right" width="450" height="550" />
+
+        <div class="textView">
+            <p>@item.TitleConcert</p>
+            <p>Ticket price from: @item.PriceTicket som</p>
+            <p>Location: @item.Location (@item.HallForPerformances)</p>
+            <p>Phone for information: @item.PhoneInfoConcert</p>
+
+        </div>
+        <p style="font-size: 20px"><b>Description</b> <br /> @item.Description</p>
+
+
+        <img src="https://ticket.kg/images/theme/calendar-red.svg" width="20" height="20" /> 
+        <p>The date of the:</p>
+        
+        @foreach (var dates in item.dates)
+        {
+            <p>@dates.Date <a asp-controller="Reservations" asp-action="ReservationsTicket" asp-route-Id="@item.Id" asp-route-date="@dates.Date" class="button">To book </a></p>
+        }
+    }
+</div>
+
+<style>
+    .textView {
+        font-size: 20px;
+        font-family: Arial;
+        line-height: 50px;
+    }
+
+    .button {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 5px 15px; /* Поля */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+</style>

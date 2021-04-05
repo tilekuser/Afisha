@@ -1,25 +1,22 @@
 ﻿@model IEnumerable<EventsView>
-@{
-    ViewData["Title"] = "Home Page";
-}
 
-<div class="text-center">
-    <h1 class="display-4">All events:</h1>
-</div>
+@{
+    ViewData["Title"] = "Concerts";
+}
 
 <div>
 
-    @foreach (var concert in Model)
+    @foreach (var item in Model)
     {
         <div class="AfishaBorder">
-            <img src="@concert.Image" width="300" height="350" />
-
+            <img src="@item.Image" width="300" height="350" />
+            
             <div class="textView">
+                
+                <p>Location: @item.Location </p>
+                <p>Ticket price from: @item.PriceTicket</p>
 
-                <p>Location: @concert.Location </p>
-                <p>Ticket price from: @concert.PriceTicket</p>
-
-                <a asp-controller="Home" asp-action="DetailsPage" asp-route-Id="@concert.Id" class="button">See more</a>
+                <a asp-controller="Home" asp-action="DetailsPage" asp-route-Id="@item.Id" class="button">See more</a>
             </div>
         </div>
     }
