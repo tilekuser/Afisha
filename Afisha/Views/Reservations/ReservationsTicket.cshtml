@@ -12,36 +12,36 @@
             <label>@i</label>
 
             <input name="orderNumbers" value="@i" type="checkbox"
-                   @if (Model.Seatreservations.Contains(i)) {
-            <input value="@(i)" type="checkbox" checked disabled />
-        }>
+                   checked="@(Model.Seatreservations.Contains(i) ? "checked" : null)"
+                   disabled="@(Model.Seatreservations.Contains(i) ? "disabled" : null)" />
 
-if (i == 80)
-{
-    <p class="priceView" style="background-color: saddlebrown"> Ticket price: @(Model.BeginPriceTicket+100) som</p>
-}
+        @if (i == 80)
+        {
+            <p class="priceView" style="background-color: saddlebrown"> Ticket price: @(Model.BeginPriceTicket + 100) som</p>
+        }
 
-if (i == 60)
-{
-    <br />
-    <p class="priceView" style="background-color:yellow">Ticket price: @(Model.BeginPriceTicket+200) som</p>
-}
+        @if (i == 60)
+        {
+            <br />
+            <p class="priceView" style="background-color:yellow">Ticket price: @(Model.BeginPriceTicket + 200) som</p>
+        }
 
-if (i == 40)
-{
-    <br />
-    <p class="priceView" style="background-color:green">Ticket price: @(Model.BeginPriceTicket+300) som</p>
-}
-if (i == 20)
-{
-    <br />
-    <p class="priceView" style="background-color: red">Ticket price: @(Model.BeginPriceTicket+400) som</p>
-}
-}
+        @if (i == 40)
+        {
+            <br />
+            <p class="priceView" style="background-color:green">Ticket price: @(Model.BeginPriceTicket + 300) som</p>
+        }
+
+        @if (i == 20)
+        {
+            <br />
+            <p class="priceView" style="background-color: red">Ticket price: @(Model.BeginPriceTicket + 400) som</p>
+        }
+        }
     </div>
 
     <button>To book</button>
-    <a asp-controller="Notification" asp-action="SendNotificationEmail" asp-route-idEvent="@Model.Id" asp-route-date="@Model.Date" asp-route-userName="@Model.UserName" asp-route-titleEvent="@Model.Title" class="button">Sent notification</a>
+    <a asp-controller="Notification" asp-action="SendNotificationEmail" asp-route-Id="@Model.Id" asp-route-date="@Model.Date" asp-route-userName="@Model.UserName" asp-route-titleEvent="@Model.Title" class="button">Sent notification</a>
 </form>
 
 @if (TempData["SuccessMessage"] != null)

@@ -18,7 +18,7 @@ namespace Afisha.Controllers
         long interval = 30000; //30 секунд
         static object synclock = new object();
         static bool sent = false;
-        public IActionResult SendNotificationEmail(int idEvent, string date, string username, string titleEvent)
+        public IActionResult SendNotificationEmail(int Id, string date, string username, string titleEvent)
         {
             //timer = new Timer(new TimerCallback(ss), null, 0, interval);
             //Console.WriteLine("sss");
@@ -59,7 +59,7 @@ namespace Afisha.Controllers
                     }
                 }
             }
-            return RedirectToAction("ReservationsTicket", "Reservations", new { date = date, idEvent = idEvent });
+            return RedirectToAction("ReservationsTicket", "Reservations", new { date = date, Id = Id });
 
         }
         public void Ss(Object obj)

@@ -15,13 +15,13 @@ namespace Afisha.Controllers
         { }
 
         [HttpGet]
-        public async Task<IActionResult> ReservationsTicket(int idEvent, string date)
+        public async Task<IActionResult> ReservationsTicket(int Id, string date)
         {
             var dateEvent = DateTime.Parse(date);
 
             var user = await db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
-            var SeansEvent = await db.seanses.FirstOrDefaultAsync(c => c.ConcertId == idEvent && c.Date == dateEvent);
-            var concert = await db.concerts.FirstOrDefaultAsync(n => n.Id == idEvent);
+            var SeansEvent = await db.seanses.FirstOrDefaultAsync(c => c.ConcertId == Id && c.Date == dateEvent);
+            var concert = await db.concerts.FirstOrDefaultAsync(n => n.Id == Id);
             var location = await db.locations.FirstOrDefaultAsync(t => t.Id == concert.LocationId);
             var SeansesReservations = db.reservations.Where(n => n.SeanseId == SeansEvent.Id);
             
