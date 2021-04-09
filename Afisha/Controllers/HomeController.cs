@@ -9,7 +9,7 @@ using Afisha.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Afisha.Enum;
+
 
 namespace Afisha.Controllers
 {

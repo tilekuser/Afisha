@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Afisha.Models
 {
-    public class Concert
+    public class AdminConcertCRUD
     {
         public int Id { get; set; }
         public string TitleConcert { get; set; }

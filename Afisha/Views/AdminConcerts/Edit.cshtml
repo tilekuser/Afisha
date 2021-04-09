@@ -1,0 +1,75 @@
+﻿@model Afisha.Models.Concert
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Concert</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="TitleConcert" class="control-label"></label>
+                <input asp-for="TitleConcert" class="form-control" />
+                <span asp-validation-for="TitleConcert" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConcertDate" class="control-label"></label>
+                <input asp-for="ConcertDate" class="form-control" />
+                <span asp-validation-for="ConcertDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationEnumId" class="control-label"></label>
+                <select asp-for="LocationEnumId" class="form-control">
+                    <option value="@LocationsPlace.Philharmonics">Philharmonics</option>
+                </select>
+                <span asp-validation-for="LocationEnumId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceTicket" class="control-label"></label>
+                <input asp-for="PriceTicket" class="form-control" />
+                <span asp-validation-for="PriceTicket" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HallForPerformances" class="control-label"></label>
+                <select asp-for="HallForPerformances" class="form-control">
+                    <option value="@HallForPerformances.BigHall">Big hall</option>
+                    <option value="@HallForPerformances.SmallHall">Small hall</option>
+                </select>
+                <span asp-validation-for="HallForPerformances" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneInfoConcert" class="control-label"></label>
+                <input asp-for="PhoneInfoConcert" class="form-control" />
+                <span asp-validation-for="PhoneInfoConcert" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
