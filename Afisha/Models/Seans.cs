@@ -10,6 +10,7 @@ namespace Afisha.Models
         public int Id { get; set; }
         public int ConcertId { get; set; }
         public DateTime Date { get; set; }
+        public Concert Concert { get; set; }
 
     }
 }

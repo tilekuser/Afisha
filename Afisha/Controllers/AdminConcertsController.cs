@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Afisha;
 using Afisha.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Afisha.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminConcertsController : BaseController
     {
         public AdminConcertsController(ILogger<HomeController> logger, AfishaContext _db) : base(logger, _db)
@@ -51,24 +53,49 @@ namespace Afisha.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleConcert,ConcertDate,LocationId,LocationEnumId,PriceTicket,HallForPerformances,PhoneInfoConcert,Image,Description")] Concert concert)
+        public async Task<IActionResult> Create([Bind("Id,TitleConcert,ConcertDate,LocationId,LocationEnumId,PriceTicket,HallForPerformances,PhoneInfoConcert,Image,Description")] AdminConcertCRUD concert, DateTime[] dateTimes)
         {
+            for (int i = 0; i < dateTimes.Length; i++)
+            {
+                var busySeans = await db.seanses.FirstOrDefaultAsync(d => d.Date.AddMinutes(240) >= dateTimes[i] && d.Date.AddMinutes(-240) <= dateTimes[i]);
+
+                if (busySeans != null)
+                {
+                    concert.dateTimes = dateTimes;
+                    ModelState.AddModelError("", $"Dates are busy{dateTimes[i]}. Because the concert will take place in {busySeans.Date}");
+                    return View(concert);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 await db.concerts.AddAsync(new Concert
                 {
-                    Id = concert.Id,
                     LocationEnumId = concert.LocationEnumId,
                     Image = concert.Image,
                     HallForPerformances = concert.HallForPerformances,
                     PriceTicket = concert.PriceTicket,
                     TitleConcert = concert.TitleConcert,
                     PhoneInfoConcert = concert.PhoneInfoConcert,
-                    ConcertDate = concert.ConcertDate,
                     Description = concert.Description,
-                    LocationId = concert.LocationEnumId == LocationsPlace.Philharmonics ? 1 : 0
+                    LocationId = concert.LocationEnumId == LocationsPlace.Philharmonics ? 1 : 0,
+                    Duration = concert.Duration
                 });
                 await db.SaveChangesAsync();
+
+
+                for (int i = 0; i < dateTimes.Length; i++)
+                {
+                    var newConcert = await db.concerts.FirstOrDefaultAsync(s => s.TitleConcert == concert.TitleConcert && s.Image == concert.Image && s.Description == concert.Description);
+                    await db.seanses.AddAsync(new Seans
+                    {
+                        Date = dateTimes[i],
+                        ConcertId = newConcert.Id,
+                    }
+                    );
+                    await db.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(concert);
@@ -106,16 +133,6 @@ namespace Afisha.Controllers
             {
                 try
                 {
-                    
-                    //concert.Id = concertEdit.Id;
-                    //concert.LocationEnumId = concertEdit.LocationEnumId;
-                    //concert.Image = concertEdit.Image;
-                    //concert.HallForPerformances = concertEdit.HallForPerformances;
-                    //concert.PriceTicket = concertEdit.PriceTicket;
-                    //concert.TitleConcert = concertEdit.TitleConcert;
-                    //concert.PhoneInfoConcert = concertEdit.PhoneInfoConcert;
-                    //concert.ConcertDate = concertEdit.ConcertDate;
-                    //concert.Description = concertEdit.Description;
                     db.Update(concertEdit);
                     var concert = await db.concerts.FirstOrDefaultAsync(l => l.Id == concertEdit.Id);
                     concert.LocationId = concert.LocationEnumId == LocationsPlace.Philharmonics ? 1 : 0;

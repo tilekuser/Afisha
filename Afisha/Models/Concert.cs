@@ -10,7 +10,6 @@ namespace Afisha.Models
     {
         public int Id { get; set; }
         public string TitleConcert { get; set; }
-        public DateTime ConcertDate { get; set; }
         public int LocationId { get; set; }
         public LocationsPlace LocationEnumId { get; set; }
         public int PriceTicket { get; set; }
@@ -18,6 +17,7 @@ namespace Afisha.Models
         public string PhoneInfoConcert { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
+        public int Duration { get;set; }
 
     }
 }

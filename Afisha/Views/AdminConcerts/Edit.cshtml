@@ -19,11 +19,11 @@
                 <input asp-for="TitleConcert" class="form-control" />
                 <span asp-validation-for="TitleConcert" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConcertDate" class="control-label"></label>
-                <input asp-for="ConcertDate" class="form-control" />
-                <span asp-validation-for="ConcertDate" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+            <label asp-for="ConcertDate" class="control-label"></label>
+            <input asp-for="ConcertDate" class="form-control" />
+            <span asp-validation-for="ConcertDate" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="LocationEnumId" class="control-label"></label>
                 <select asp-for="LocationEnumId" class="form-control">
@@ -59,6 +59,12 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

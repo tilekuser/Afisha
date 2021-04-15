@@ -1,4 +1,4 @@
-﻿@model Afisha.Models.Concert
+﻿@model Afisha.Models.AdminConcertCRUD
 
 @{
     ViewData["Title"] = "Create";
@@ -19,11 +19,6 @@
                 <span asp-validation-for="TitleConcert" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ConcertDate" class="control-label"></label>
-                <input asp-for="ConcertDate" class="form-control" />
-                <span asp-validation-for="ConcertDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="LocationEnumId" class="control-label"></label>
                 <select asp-for="LocationEnumId" class="form-control">
                     <option value="@LocationsPlace.Philharmonics">Philharmonics</option>
@@ -32,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PriceTicket" class="control-label"></label>
-                <input asp-for="PriceTicket" class="form-control" />
+                <input asp-for="PriceTicket" class="form-control" placeholder="Som" />
                 <span asp-validation-for="PriceTicket" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -50,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+                <input asp-for="Image" class="form-control" placeholder="Link" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -58,6 +53,19 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" placeholder="Minutes"/>
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+
+            <div class="form">
+                <label asp-for="dateTimes" class="control-label">Seans date</label>
+                <input asp-for="dateTimes" type="datetime-local" class="form-control" />
+                <span asp-validation-for="dateTimes" class="text-danger"></span>
+                <input type="button" value="Add seans" class="add" />
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -72,3 +80,25 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    .add {
+        cursor: pointer;
+    }
+
+    .form input {
+        display: block;
+    }
+</style>
+
+<script>
+    var $add = document.getElementsByClassName('add')[0];
+    var $form = document.getElementsByClassName('form')[0];
+    $add.addEventListener('click', function (event) {
+        var $input = document.createElement('input');
+        $input.name = 'dateTimes'
+        $input.type = 'datetime-local';
+        $input.classList.add('form-control');
+        $form.insertBefore($input, $add);
+    });
+</script>

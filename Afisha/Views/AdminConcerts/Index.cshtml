@@ -17,9 +17,6 @@
                 @Html.DisplayNameFor(model => model.TitleConcert)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConcertDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.LocationEnumId)
             </th>
             <th>
@@ -31,6 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PhoneInfoConcert)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -41,9 +41,6 @@
                 @Html.DisplayFor(modelItem => item.TitleConcert)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConcertDate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.LocationEnumId)
             </td>
             <td>
@@ -51,6 +48,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.HallForPerformances)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneInfoConcert)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
             </td>
 
             <td>
