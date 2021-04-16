@@ -183,9 +183,16 @@ namespace Afisha.Controllers
         {
             var concert = await db.concerts.FindAsync(id);
             var seans = db.seanses.Where(s => s.ConcertId == id).ToList();
+            int seansId = 0;
             foreach (var item in seans)
             {
+                seansId = item.Id;
                 db.seanses.Remove(item);
+            }
+            var reservations = db.reservations.Where(s => s.SeanseId == seansId);
+            foreach (var item2 in reservations)
+            {
+                db.reservations.Remove(item2);
             }
             db.concerts.Remove(concert);
             await db.SaveChangesAsync();
