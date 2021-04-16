@@ -6,6 +6,7 @@ using Afisha.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 
 namespace Afisha.Controllers
 {
@@ -67,7 +68,29 @@ namespace Afisha.Controllers
                     }
                     await db.SaveChangesAsync();
                     await transaction.CommitAsync();
-                    TempData["SuccessMessage"] = $"You have booked successfully!";
+
+                    var user = await db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+                    
+                    MimeMessage message = new MimeMessage();
+                    message.From.Add(new MailboxAddress("Моя компания", "admin@mycompany.com"));
+                    message.To.Add(new MailboxAddress($"{user.UserName}"));
+                    message.Subject = "Уведомление от Afisha!";
+
+                    for (int i = 0; i < orderNumbers.Length; i++)
+                    {
+                        message.Body = new BodyBuilder() { HtmlBody = $"<h1 style=\"color: green;\">Good day{user.UserName}! On {date} a concert will take place {reservations.Title}, do not forget! Your seat(s) {orderNumbers[i]}." }.ToMessageBody();
+                    }
+                   
+
+                    using (MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient())
+                    {
+                        client.Connect("smtp.gmail.com", 465, true);
+                        client.Authenticate("AfishaBishkek@gmail.com", "Afisha01");
+                        client.Send(message);
+
+                        client.Disconnect(true);
+                    }
+                    TempData["SuccessNotification"] = $" The letter has been sent to your mail. You have booked successfully!";
                     return RedirectToAction("ReservationsTicket", new { date = date });
                 }
             }

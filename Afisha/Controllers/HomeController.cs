@@ -25,7 +25,7 @@ namespace Afisha.Controllers
             new EventsView
             {
                 Id = concert.Id,
-                Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
                 Image = concert.Image,
                 PriceTicket = concert.PriceTicket
             });
@@ -45,7 +45,7 @@ namespace Afisha.Controllers
             new EventsView
             {
                 Id = concert.Id,
-                Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
                 Image = concert.Image,
                 PriceTicket = concert.PriceTicket
             });
@@ -63,7 +63,7 @@ namespace Afisha.Controllers
                                 {
                                     Id = concerts.Id,
                                     TitleConcert = concerts.TitleConcert,                                  
-                                    Location = concerts.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                                    Location = concerts.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
                                     PriceTicket = concerts.PriceTicket,
                                     HallForPerformances = concerts.HallForPerformances == HallForPerformances.BigHall ? "Big hall" : concerts.HallForPerformances == HallForPerformances.SmallHall ? "Small hall" : "Street",
                                     PhoneInfoConcert = concerts.PhoneInfoConcert,

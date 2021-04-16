@@ -34,6 +34,7 @@ namespace Afisha.Controllers
 
             var concert = await db.concerts
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "not result";
             if (concert == null)
             {
                 return NotFound();
@@ -53,7 +54,7 @@ namespace Afisha.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TitleConcert,ConcertDate,LocationId,LocationEnumId,PriceTicket,HallForPerformances,PhoneInfoConcert,Image,Description")] AdminConcertCRUD concert, DateTime[] dateTimes)
+        public async Task<IActionResult> Create(AdminConcertCRUD concert, DateTime[] dateTimes)
         {
             for (int i = 0; i < dateTimes.Length; i++)
             {
@@ -71,14 +72,14 @@ namespace Afisha.Controllers
             {
                 await db.concerts.AddAsync(new Concert
                 {
-                    LocationEnumId = concert.LocationEnumId,
+                    //LocationEnumId = concert.LocationEnumId,
                     Image = concert.Image,
                     HallForPerformances = concert.HallForPerformances,
                     PriceTicket = concert.PriceTicket,
                     TitleConcert = concert.TitleConcert,
                     PhoneInfoConcert = concert.PhoneInfoConcert,
                     Description = concert.Description,
-                    LocationId = concert.LocationEnumId == LocationsPlace.Philharmonics ? 1 : 0,
+                    LocationId = concert.LocationId == LocationsPlace.Philharmonics ? 1 : 0,
                     Duration = concert.Duration
                 });
                 await db.SaveChangesAsync();
@@ -122,7 +123,7 @@ namespace Afisha.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TitleConcert,LocationId,ConcertDate,LocationEnumId,PriceTicket,HallForPerformances,PhoneInfoConcert,Image,Description")] Concert concertEdit)
+        public async Task<IActionResult> Edit(int id, Concert concertEdit,LocationsPlace Location)
         {
             if (id != concertEdit.Id)
             {
@@ -135,7 +136,7 @@ namespace Afisha.Controllers
                 {
                     db.Update(concertEdit);
                     var concert = await db.concerts.FirstOrDefaultAsync(l => l.Id == concertEdit.Id);
-                    concert.LocationId = concert.LocationEnumId == LocationsPlace.Philharmonics ? 1 : 0;
+                    concert.LocationId = Location == LocationsPlace.Philharmonics ? 1 : 0;
 
                     await db.SaveChangesAsync();
                 }
@@ -165,6 +166,8 @@ namespace Afisha.Controllers
 
             var concert = await db.concerts
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "not result";
+
             if (concert == null)
             {
                 return NotFound();
@@ -179,6 +182,11 @@ namespace Afisha.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var concert = await db.concerts.FindAsync(id);
+            var seans = db.seanses.Where(s => s.ConcertId == id).ToList();
+            foreach (var item in seans)
+            {
+                db.seanses.Remove(item);
+            }
             db.concerts.Remove(concert);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

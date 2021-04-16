@@ -11,7 +11,7 @@ namespace Afisha.Models
         public int Id { get; set; }
         public string TitleConcert { get; set; }
         public int LocationId { get; set; }
-        public LocationsPlace LocationEnumId { get; set; }
+        //public LocationsPlace LocationEnumId { get; set; }
         public int PriceTicket { get; set; }
         public HallForPerformances HallForPerformances { get; set; }
         public string PhoneInfoConcert { get; set; }

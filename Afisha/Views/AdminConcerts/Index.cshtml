@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Afisha.Models.Concert>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Settings concert";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Settings concert</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New concert</a>
 </p>
 <table class="table">
     <thead>
@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.TitleConcert)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LocationEnumId)
+                @Html.DisplayNameFor(model => model.LocationId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PriceTicket)
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.TitleConcert)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LocationEnumId)
+                @(item.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "not result")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PriceTicket)
