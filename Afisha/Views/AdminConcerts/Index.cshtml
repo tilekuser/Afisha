@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Afisha.Models.Concert>
+
+@{
+    ViewData["Title"] = "Settings concert";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Settings concert</h1>
+
+<p>
+    <a asp-action="Create">Create New concert</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TitleConcert)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceTicket)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HallForPerformances)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneInfoConcert)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleConcert)
+            </td>
+            <td>
+                @(item.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "not result")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceTicket)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HallForPerformances)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneInfoConcert)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

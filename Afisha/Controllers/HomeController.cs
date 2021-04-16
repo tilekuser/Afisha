@@ -9,7 +9,7 @@ using Afisha.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Afisha.Enum;
+
 
 namespace Afisha.Controllers
 {
@@ -21,17 +21,16 @@ namespace Afisha.Controllers
 
         public IActionResult Index()
         {
-            var eventsViews = from concert in db.concerts.Where(c => c.ConcertDate >= DateTime.Today).ToList()
-                              select
-                              (new EventsView
-                              {
-                                  Id = concert.Id,
-                                  Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
-                                  Image = concert.Image,
-                                  PriceTicket = concert.PriceTicket
-                              });
+            var eventsView = db.seanses.Where(s => s.Date >= DateTime.Today).Include(s => s.Concert).Select(s => s.Concert).Distinct().Select(concert =>
+            new EventsView
+            {
+                Id = concert.Id,
+                Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                Image = concert.Image,
+                PriceTicket = concert.PriceTicket
+            });
 
-            return View(eventsViews);
+            return View(eventsView);
         }
 
         //public IActionResult Privacy()
@@ -39,42 +38,41 @@ namespace Afisha.Controllers
         //    return View();
         //}
 
-        public IActionResult ConcertsView(EventsView eventsView)
+        public IActionResult ConcertsView()
         {
-            var eventsViews = from concert in db.concerts.Where(c => c.ConcertDate >= DateTime.Today).ToList()
-                              select
-                             (
-                             new EventsView
-                              {
-                                  Id = concert.Id,
-                                  Location = concert.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
-                                  Image = concert.Image,
-                                  PriceTicket = concert.PriceTicket
-                              });
+            var eventsView = db.seanses.Where(s => s.Date >= DateTime.Today).Include(s => s.Concert).Select(s => s.Concert).Distinct().Select(        
+                concert =>
+            new EventsView
+            {
+                Id = concert.Id,
+                Location = concert.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                Image = concert.Image,
+                PriceTicket = concert.PriceTicket
+            });
 
-            return View(eventsViews);
+            return View(eventsView);
         }
 
         public async Task<IActionResult> DetailsPage(int Id)
         {
             var seans = await db.seanses.Where(n => n.ConcertId == Id && n.Date >= DateTime.Today).ToListAsync();
-            var concertDetail = from app in db.concerts.Where(n => n.Id == Id)
-                               select
-                               (
-                               new DetailsPage
-                               {
-                                   Id = app.Id,
-                                   TitleConcert = app.TitleConcert,
-                                   ConcertDate = app.ConcertDate,
-                                   Location = app.LocationEnumId == LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
-                                   PriceTicket = app.PriceTicket,
-                                   HallForPerformances = app.HallForPerformances == HallForPerformances.BigHall ? "Big hall" : app.HallForPerformances == HallForPerformances.SmallHall ? "Small hall" : "Street",
-                                   PhoneInfoConcert = app.PhoneInfoConcert,
-                                   Image = app.Image,
-                                   Description = app.Description,
-                                   dates = seans                           
-                               }
-                               );
+            var concertDetail = from concerts in db.concerts.Where(n => n.Id == Id)
+                                select
+                                (
+                                new DetailsPage
+                                {
+                                    Id = concerts.Id,
+                                    TitleConcert = concerts.TitleConcert,                                  
+                                    Location = concerts.LocationId == (int)LocationsPlace.Philharmonics ? "Philharmonics" : "Not result",
+                                    PriceTicket = concerts.PriceTicket,
+                                    HallForPerformances = concerts.HallForPerformances == HallForPerformances.BigHall ? "Big hall" : concerts.HallForPerformances == HallForPerformances.SmallHall ? "Small hall" : "Street",
+                                    PhoneInfoConcert = concerts.PhoneInfoConcert,
+                                    Image = concerts.Image,
+                                    Description = concerts.Description,
+                                    dates = seans,
+                                    Duration = concerts.Duration == 0 ? "Not result" : $"{concerts.Duration}"
+                                }
+                                );
             return View(concertDetail.ToList());
         }
 

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Afisha.Enum
+namespace Afisha.Models
 {
-    public enum HallForPerformances
+    public enum LocationsPlace
     {
-        BigHall = 1,
-        SmallHall = 2
+        Philharmonics = 1
     }
 }

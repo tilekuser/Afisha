@@ -1,0 +1,104 @@
+﻿@model Afisha.Models.AdminConcertCRUD
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Concert</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TitleConcert" class="control-label"></label>
+                <input asp-for="TitleConcert" class="form-control" />
+                <span asp-validation-for="TitleConcert" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control">
+                    <option value="@LocationsPlace.Philharmonics">Philharmonics</option>
+                </select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceTicket" class="control-label"></label>
+                <input asp-for="PriceTicket" class="form-control" placeholder="Som" />
+                <span asp-validation-for="PriceTicket" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HallForPerformances" class="control-label"></label>
+                <select asp-for="HallForPerformances" class="form-control">
+                    <option value="@HallForPerformances.BigHall">Big hall</option>
+                    <option value="@HallForPerformances.SmallHall">Small hall</option>
+                </select>
+                <span asp-validation-for="HallForPerformances" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneInfoConcert" class="control-label"></label>
+                <input asp-for="PhoneInfoConcert" class="form-control" />
+                <span asp-validation-for="PhoneInfoConcert" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" placeholder="Link" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" placeholder="Minutes"/>
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+
+            <div class="form">
+                <label asp-for="dateTimes" class="control-label">Seans date</label>
+                <input asp-for="dateTimes" type="datetime-local" class="form-control" />
+                <span asp-validation-for="dateTimes" class="text-danger"></span>
+                <input type="button" value="Add seans" class="add" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<style>
+    .add {
+        cursor: pointer;
+    }
+
+    .form input {
+        display: block;
+    }
+</style>
+
+<script>
+    var $add = document.getElementsByClassName('add')[0];
+    var $form = document.getElementsByClassName('form')[0];
+    $add.addEventListener('click', function (event) {
+        var $input = document.createElement('input');
+        $input.name = 'dateTimes'
+        $input.type = 'datetime-local';
+        $input.classList.add('form-control');
+        $form.insertBefore($input, $add);
+    });
+</script>

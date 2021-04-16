@@ -13,5 +13,6 @@ namespace Afisha.Models
         public DateTime Date { get; set; }
         public List<int> Seatreservations { get; set; }
         public int TotalSeats { get; set; }
+        public string UserName { get; set; }
     }
 }
