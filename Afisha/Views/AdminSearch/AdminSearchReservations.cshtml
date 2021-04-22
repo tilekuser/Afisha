@@ -1,0 +1,32 @@
+﻿@model AdminSearchVM
+@{
+}
+<form asp-action="AdminSearchReservations" asp-controller="AdminSearch" asp-antiforgery="true">
+    <input asp-for="Guid" placeholder="HashCode" /><button>Search</button>
+</form>
+
+
+@if (Model != null && Model.Seats != null)
+{
+    <p>Login: @Model.UserName</p>
+    <p>Event: @Model.TitleEvent</p>
+    <p>Date: @Model.Date</p>
+    <p>Total price: @Model.TotalPrice сом</p>
+    <p>
+        Reserved seats:
+        @foreach (var item in Model.Seats)
+        {
+            @item <d1>,</d1>
+        }
+    </p>
+    <form asp-action="AdminSearchReservations" asp-controller="AdminSearch" asp-antiforgery="true" >
+        <input asp-for="Guid" asp-route-pay="1" placeholder="HashCode" type="submit"/><label>Pay</label>
+    </form>
+}
+
+@if (TempData["ErrorSearch"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorSearch"]
+    </div>
+}

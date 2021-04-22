@@ -40,7 +40,7 @@ namespace Afisha.Controllers
             {
 
             }
-            return RedirectToAction("ReservationsTicket", "Reservations", new { date = date, Id = Id });
+            return RedirectToAction("ReservationsTicketPhilharmonics", "Reservations", new { date = date, Id = Id });
         }
     }
 }
