@@ -4,7 +4,7 @@
 }
 <h1>@Model.Title</h1>
 <label>@Model.Date</label>
-<form asp-action="ReservationsTicket" asp-controller="Reservations" asp-route-date="@Model.Date" asp-anti-forgery="true">
+<form asp-action="ReservationsTicketPhilharmonics" asp-controller="Reservations" asp-route-date="@Model.Date" asp-route-title="@Model.Title" asp-anti-forgery="true">
     <div class="checkboxes">
         <p class="priceView" style="background-color: white">Ticket price @Model.BeginPriceTicket som</p>
         @for (int i = Model.TotalSeats; i > 0; i--)
@@ -92,5 +92,4 @@
             margin-right: 10px;
         }
 </style>
-
 

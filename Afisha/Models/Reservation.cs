@@ -11,5 +11,8 @@ namespace Afisha.Models
         public int SeanseId { get; set; }
         public int UserId { get; set; }
         public int SeatReservation { get; set; }
+        public string Guid { get; set; }
+        public int Price { get; set; }
+        public int Status { get; set; }
     }
 }

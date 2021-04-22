@@ -26,7 +26,7 @@
         
         @foreach (var dates in item.dates)
         {
-            <p>@dates.Date <a asp-controller="Reservations" asp-action="ReservationsTicket" asp-route-Id="@item.Id" asp-route-date="@dates.Date" class="button">To book </a></p>
+            <p>@dates.Date <a asp-controller="Reservations" asp-action="ReservationsTicketPhilharmonics" asp-route-Id="@item.Id" asp-route-date="@dates.Date" class="button">To book </a></p>
         }
     }
 </div>

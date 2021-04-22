@@ -16,7 +16,7 @@ namespace Afisha.Controllers
         { }
 
         [HttpGet]
-        public async Task<IActionResult> ReservationsTicket(int Id, string date)
+        public async Task<IActionResult> ReservationsTicketPhilharmonics(int Id, string date)
         {
             var dateEvent = DateTime.Parse(date);
 
@@ -48,22 +48,40 @@ namespace Afisha.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReservationsTicket(ReservationsVM reservations, int[] orderNumbers,string date)
+        public async Task<IActionResult> ReservationsTicketPhilharmonics(ReservationsVM reservations, List<int> orderNumbers,string date, string title)
         {
             var dateEvent = DateTime.Parse(date);
             var seans = await db.seanses.FirstOrDefaultAsync(x => x.ConcertId == reservations.Id && x.Date == dateEvent);
+            var reservationss = await db.reservations.FirstOrDefaultAsync(g => g.SeanseId == seans.Id && g.UserId == UserId);
+            var concert = db.concerts.FirstOrDefault(p => p.Id == reservations.Id);
+            string guid = Guid.NewGuid().ToString(); 
 
-            if (orderNumbers.Length != 0)
+            if(reservationss != null)
+            {
+                guid = reservationss.Guid;
+            }
+
+            if (orderNumbers.Count != 0)
             {
                 using (var transaction = await db.Database.BeginTransactionAsync())
                 {
-                    for (int i = 0; i < orderNumbers.Length; i++)
+                    for (int i = 0; i < orderNumbers.Count; i++)
                     {
+                        int price = 0;
+                        if (orderNumbers[i] <= 19) price = concert.PriceTicket + 400;                                               
+                        if (orderNumbers[i] >= 20 && orderNumbers[i] <= 39) price = concert.PriceTicket + 300;                       
+                        if (orderNumbers[i] >= 40 && orderNumbers[i] <= 59) price = concert.PriceTicket + 200;                                               
+                        if (orderNumbers[i] >= 60 && orderNumbers[i] <= 79) price = concert.PriceTicket + 100;                                              
+                        if (orderNumbers[i] >= 80 && orderNumbers[i] <= 99) price = concert.PriceTicket;
+ 
                         await db.reservations.AddAsync(new Reservation
                         {
                             SeanseId = seans.Id,
                             UserId = UserId,
-                            SeatReservation = orderNumbers[i]
+                            SeatReservation = orderNumbers[i],
+                            Guid = guid.ToString(),
+                            Price = price,
+                            Status = 0
                         });
                     }
                     await db.SaveChangesAsync();
@@ -72,16 +90,11 @@ namespace Afisha.Controllers
                     var user = await db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
                     
                     MimeMessage message = new MimeMessage();
-                    message.From.Add(new MailboxAddress("Моя компания", "admin@mycompany.com"));
+                    message.From.Add(new MailboxAddress("Afisha", ""));
                     message.To.Add(new MailboxAddress($"{user.UserName}"));
                     message.Subject = "Уведомление от Afisha!";
-
-                    for (int i = 0; i < orderNumbers.Length; i++)
-                    {
-                        message.Body = new BodyBuilder() { HtmlBody = $"<h1 style=\"color: green;\">Good day{user.UserName}! On {date} a concert will take place {reservations.Title}, do not forget! Your seat(s) {orderNumbers[i]}." }.ToMessageBody();
-                    }
-                   
-
+                    message.Body = new BodyBuilder() { HtmlBody = $"<h1  style=\"color: green;\">Good day {user.Name} {user.Surname}! On {date} a concert will take place {title}, do not forget! Your hashcode {guid}." }.ToMessageBody(); 
+                                  
                     using (MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient())
                     {
                         client.Connect("smtp.gmail.com", 465, true);
@@ -91,11 +104,11 @@ namespace Afisha.Controllers
                         client.Disconnect(true);
                     }
                     TempData["SuccessNotification"] = $" The letter has been sent to your mail. You have booked successfully!";
-                    return RedirectToAction("ReservationsTicket", new { date = date });
+                    return RedirectToAction("ReservationsTicketPhilharmonics", new { date = date });
                 }
             }
             TempData["ErrorMessage"] = $"You have not selected a seat for booking";
-            return RedirectToAction("ReservationsTicket", new { date = date } );
+            return RedirectToAction("ReservationsTicketPhilharmonics", new { date = date } );
         }
     }
 }
